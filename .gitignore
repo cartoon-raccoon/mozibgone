@@ -5,3 +5,4 @@
 *.gpr
 __pycache__
 samples
+test*
