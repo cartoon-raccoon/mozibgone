@@ -136,7 +136,7 @@ def main():
             decoder = MoziDecoder(use)
             config = decoder.decode()
 
-            print("[*] Extracted config fields")
+            print(f"[*] Extracted config fields for '{file}'")
             for key, val in config.items():
                 print(f"{key} : {val}")
             
