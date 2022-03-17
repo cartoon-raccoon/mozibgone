@@ -136,8 +136,10 @@ def main():
             decoder = MoziDecoder(use)
             config = decoder.decode()
 
-            #todo: fix this into something nicer
-            logger.info(f"\nExtracted config:\n\n{json.dumps(config)}\n")
+            print("[*] Extracted config fields")
+            for key, val in config.items():
+                print(f"{key} : {val}")
+            
         except MoziHeaderError:
             logger.error("[ERROR] Could not find Mozi config header within sample binary")
             sys.exit(2)
