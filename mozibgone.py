@@ -52,7 +52,6 @@ parser.add_argument(
 parser.add_argument(
     "-q", "--quiet", action='store_true',
     help="disable all output except for errors"
-
 )
 parser.add_argument(
     "-j", "--json", help="dump the configuration to a json file"
