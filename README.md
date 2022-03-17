@@ -4,7 +4,7 @@ _A Mozi botnet UPX unpacker and config extractor_
 
 This program operates on malware samples belonging to the Mozi botnet family. An analysis of the malware can be found [here](https://blog.netlab.360.com/mozi-another-botnet-using-dht/).
 
-This program is designed to automate the extraction of IOCs (such as the XOR-encrypted configuration) as well as preparing the sample for analysis, such as circumventing the anti-unpacking measures taken to break UPX decompression.
+This program is designed to automate the preparation of the sample for analysis, such as circumventing the anti-unpacking measures taken to break UPX decompression, as well as to automate the extraction of the XOR-encrypted configuration string.
 
 ## Features
 
