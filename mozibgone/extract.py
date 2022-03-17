@@ -173,7 +173,7 @@ if __name__ == "__main__":
     decoder.decode()
     
     try:
-        decoder.inner.print_config(DecConfigType.RAW)
+        decoder.inner.print_config("raw")
         #decoder.inner.dump_config("test", DecConfigType.RAW)
         decoder.inner.parse_config()
         print(decoder.inner.configs)
