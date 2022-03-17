@@ -61,6 +61,7 @@ CONFIG_FIELDS = {
     "nd" : "new DHT node",
     "count" : "url to report to",
     # control
+    "atk" : "ddos attack type",
     "ver" : "verify",
     "hp" : "DHT id prefix",
     "dip" : "address to get new sample",
