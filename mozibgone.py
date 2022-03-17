@@ -3,6 +3,7 @@
 import argparse
 import logging
 import sys
+import json
 import re
 
 import mozibgone
@@ -10,6 +11,18 @@ from mozibgone.extract import *
 from mozibgone.unpack import *
 
 desc = "Mozi botnet unpacker and config extractor"
+
+header = """                              __                                        
+                           __/\ \                                       
+  ___ ___     ___   ____  /\_\ \ \____     __     ___     ___      __   
+/' __` __`\  / __`\/\_ ,`\\\/\ \ \ '__`\  /'_ `\  / __`\ /' _ `\  /'__`\ 
+/\ \/\ \/\ \/\ \L\ \/_/  /_\ \ \ \ \L\ \/\ \L\ \/\ \L\ \/\ \/\ \/\  __/ 
+\ \_\ \_\ \_\ \____/ /\____\\\ \_\ \_,__/\ \____ \ \____/\ \_\ \_\ \____\ 
+ \/_/\/_/\/_/\/___/  \/____/ \/_/\/___/  \/___L\ \/___/  \/_/\/_/\/____/
+                                           /\____/                      
+                                           \_/__/      
+=========================================================================                 
+"""
 
 # set up argument parsing
 parser = argparse.ArgumentParser(description=desc)
@@ -68,6 +81,8 @@ def parse_magic(magic_str):
 def main():
     args = parser.parse_args()
 
+    logger.info(header)
+
     if args.file == "":
         logger.error("[ERROR] No file provided")
         sys.exit(1)
@@ -110,17 +125,24 @@ def main():
     if args.extract or all:
         #* no general 'except Exception' case for now, so we can catch bugs
         try:
-            decoder = MoziDecoder(file if output is None else output)
+            use = file if output is None else output
+            decoder = MoziDecoder(use)
             config = decoder.decode()
 
             #todo: fix this into something nicer
-            print(config)
+            logger.info(f"\nExtracted config:\n\n{json.dumps(config)}\n")
         except MoziHeaderError:
             logger.error("[ERROR] Could not find Mozi config header within sample binary")
+            sys.exit(2)
         except MoziParsingError:
             logger.error("[ERROR] An error occurred while parsing the config")
+            sys.exit(2)
         except MoziDecodeError as e:
             logger.error(f"[ERROR] {e.ty.value}")
+            sys.exit(2)
+        else:
+            logger.info(f"[*] Successfully extracted config from '{use}'")
+
         if args.json is not None:
             decoder.dump_json(args.json)
 
