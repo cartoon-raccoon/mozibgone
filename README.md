@@ -24,7 +24,7 @@ _Config Extraction_
 ## Usage
 
 ```text
-usage: mozibgone.py [-h] [-u] [-e] [-a] [-m MAGIC] [-o OUTPUT] [-v] [-j JSON] file
+usage: mozibgone.py [-h] [-u] [-e] [-a] [-m MAGIC] [-o OUTPUT] [-v] [-q] [-j JSON] file
 
 Mozi botnet unpacker and config extractor
 
@@ -41,5 +41,6 @@ options:
   -o OUTPUT, --output OUTPUT
                         separate file for UPX to output to
   -v, --verbose         enables debug output
+  -q, --quiet           disable all output except for errors
   -j JSON, --json JSON  dump the configuration to a json file
 ```

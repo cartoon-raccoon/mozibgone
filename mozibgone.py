@@ -50,6 +50,11 @@ parser.add_argument(
     help="enables debug output"
 )
 parser.add_argument(
+    "-q", "--quiet", action='store_true',
+    help="disable all output except for errors"
+
+)
+parser.add_argument(
     "-j", "--json", help="dump the configuration to a json file"
 )
 parser.add_argument("file", help="the file to operate on")
@@ -81,14 +86,16 @@ def parse_magic(magic_str):
 def main():
     args = parser.parse_args()
 
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
+    if args.quiet:
+        logger.setLevel(logging.WARNING)
+
     logger.info(header)
 
     if args.file == "":
         logger.error("[ERROR] No file provided")
         sys.exit(1)
-
-    if args.verbose:
-        logger.setLevel(logging.DEBUG)
 
     magic = mozibgone.conf.UPX_MAGIC
 
