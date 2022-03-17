@@ -34,7 +34,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "-v", "--verbose", action='store_true',
-    help="output extra information"
+    help="enables debug output"
 )
 parser.add_argument(
     "-j", "--json", help="dump the configuration to a json file"
@@ -108,12 +108,19 @@ def main():
             logger.info(f"[*] Successfully unpacked '{file}'")
 
     if args.extract or all:
-        decoder = MoziDecoder(file if output is None else output)
-        config = decoder.decode()
+        #* no general 'except Exception' case for now, so we can catch bugs
+        try:
+            decoder = MoziDecoder(file if output is None else output)
+            config = decoder.decode()
 
-        #todo: fix this into something nicer
-        print(config)
-
+            #todo: fix this into something nicer
+            print(config)
+        except MoziHeaderError:
+            logger.error("[ERROR] Could not find Mozi config header within sample binary")
+        except MoziParsingError:
+            logger.error("[ERROR] An error occurred while parsing the config")
+        except MoziDecodeError as e:
+            logger.error(f"[ERROR] {e.ty.value}")
         if args.json is not None:
             decoder.dump_json(args.json)
 
