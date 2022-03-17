@@ -160,7 +160,7 @@ class MoziUnpacker:
             self.read_file()
 
         try:
-            _ = self.data.index(UPX_MAGIC)
+            _ = self.data.index(self.magic)
             return True
         except ValueError:
             return False
@@ -243,9 +243,9 @@ class MoziUnpacker:
         self.read_file()
         unpack_output = unpack_out
 
-        # if not, check if the upx magic number is present
-        # if not present and we are not using a custom magic, raise error
-        if not self.check_upx() and not self.is_custom:
+        # self.check_upx() uses a custom magic if supplied
+        # so if not present, just die anyway
+        if not self.check_upx():
             raise NotUPXPackedErr()
 
         # first run UPX to check if it unpacks properly
