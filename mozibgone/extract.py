@@ -143,8 +143,9 @@ class MoziDecoder:
         return self.inner.decode(print)
 
     def find_config(self):
-        start = self.data.index(MOZI_CONFIG_HEADER)
-        if start == -1:
+        try:
+            start = self.data.index(MOZI_CONFIG_HEADER)
+        except ValueError:
             raise MoziHeaderError()
         else:
             self.cfg_start = start

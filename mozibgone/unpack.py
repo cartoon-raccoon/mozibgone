@@ -132,7 +132,7 @@ class MoziUnpacker:
         self.data = None
         self.hdr_idxs = []
 
-        logger.debug(f"Using magic {self.magic}")
+        logger.debug(f"[debug] using magic {self.magic}")
 
     def read_file(self):
         """
