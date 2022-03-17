@@ -1,0 +1,7 @@
+*.elf
+*.zip
+*.lock*
+*.rep
+*.gpr
+__pycache__
+samples
