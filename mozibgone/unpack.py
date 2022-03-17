@@ -132,6 +132,8 @@ class MoziUnpacker:
         self.data = None
         self.hdr_idxs = []
 
+        logger.debug(f"Using magic {self.magic}")
+
     def read_file(self):
         """
         Reads a file into memory
@@ -234,6 +236,9 @@ class MoziUnpacker:
 
         if "p_info corrupted" in errmsg:
             data = fix_p_info(data, self.hdr_idxs)
+        # catch for any stragglers that may have gotten past the magic number check
+        elif "not packed by UPX" in errmsg:
+            raise NotUPXPackedErr()
         else:
             raise MoziUnpackerErr(f"[ERROR] Cannot handle UPX error: `{errmsg}`")
 
