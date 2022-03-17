@@ -73,27 +73,27 @@ class MoziConfigDecoder:
         try:
             start = 0
             end = start + MOZI_CONFIG_TOTAL_SIZE
-            self.configs[DecConfigType.RAW] = decrypt_config(self.data[start:end])
+            self.configs["raw"] = decrypt_config(self.data[start:end])
         except:
             raise MoziDecodeError(DecodeErrType.DEFAULT)
 
     def parse_config(self):
         for field, _ in CONFIG_FIELDS.items():
             regex = re.compile(f"\[{field}\](.*)\[/{field}\]")
-            matches = regex.findall(self.configs[DecConfigType.RAW])
+            matches = regex.findall(self.configs["raw"])
             if len(matches) != 0:
                 self.configs[field] = matches[0]
         try:
             self.configs["idp"] = True if "[idp]" in self.configs["count"] else False
             self.configs["count"] = self.configs["count"].replace("[idp]", "")
-            self.configs[DecConfigType.RAW] = self.configs[DecConfigType.RAW][:MOZI_CONFIG_SIZE]\
+            self.configs["raw"] = self.configs["raw"][:MOZI_CONFIG_SIZE]\
                 .rstrip('\x00')
         except KeyError:
             raise MoziDecodeError(DecodeErrType.DEFAULT)
         except Exception:
             raise MoziParsingError()
     
-    def print_config(self, ty = DecConfigType.PARSED):
+    def print_config(self, ty):
         """
         Prints the config.
 
