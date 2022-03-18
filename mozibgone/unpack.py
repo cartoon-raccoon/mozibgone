@@ -230,9 +230,6 @@ class MoziUnpacker:
             else:
                 # update data to the latest version
                 data = list(self.data)
-                # # if we outputted to a different file
-                # if unpack_output is not None:
-                #     self.path = unpack_output
 
         if "p_info corrupted" in errmsg:
             data = fix_p_info(data, self.hdr_idxs)

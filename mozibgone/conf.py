@@ -63,11 +63,13 @@ CONFIG_FIELDS = {
     # control
     "atk" : "ddos attack type",
     "ver" : "verify",
+    "sv" : "update config",
     "hp" : "DHT id prefix",
     "dip" : "address to get new sample",
     # subtasks
-    "rn" : "execute command",
     "dr" : "download and exec payload",
+    "ud" : "update bot",
+    "rn" : "execute command",
     "idp" : "report bot info", # bot id, ip, port, file name, gateway, cpu arch
 }
 
