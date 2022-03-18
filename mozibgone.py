@@ -118,10 +118,10 @@ def main():
         #todo: better exception handling
         except NotUPXPackedErr:
             logger.error(f"[ERROR] The file '{file}' does not seem to be packed with UPX")
-            sys.exit(1)
+            sys.exit(2)
         except MoziUnpackerErr as e:
             logger.error(e.errmsg)
-            sys.exit(1)
+            sys.exit(3)
         # except Exception as e:
         #     logger.error(e)
         #     sys.exit(1)
@@ -141,13 +141,13 @@ def main():
             
         except MoziHeaderError:
             logger.error("[ERROR] Could not find Mozi config header within sample binary")
-            sys.exit(2)
+            sys.exit(4)
         except MoziParsingError:
             logger.error("[ERROR] An error occurred while parsing the config")
-            sys.exit(2)
+            sys.exit(5)
         except MoziDecodeError as e:
             logger.error(f"[ERROR] {e.ty.value}")
-            sys.exit(2)
+            sys.exit(6)
         else:
             logger.info(f"[*] Successfully extracted config from '{use}'")
 
