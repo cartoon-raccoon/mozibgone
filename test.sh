@@ -19,7 +19,9 @@ function run_test() {
 
     array=(test/master/*)
 
-    declare -A failures=(
+    declare -A results=(
+        [total]=0
+        [successes]=0
         [notupxpacked]=0
         [otherunpackerr]=0
         [nomoziheader]=0
@@ -30,9 +32,14 @@ function run_test() {
     echo $array
 
     for exe in ${array[@]}; do
+        if [[ "$exe" == "test/master/fileinfo" ]]; then
+            continue
+        fi
         output=$(printf "%s-unpacked" "$(printf "$(basename $exe)" | cut -b -8)")
         echo "doing $exe"
+        ((results[total]+=1))
         if ./mozibgone.py -q -o "test/$output" "$exe" >> test_result.txt; then
+            ((results[successes]+=1))
             echo "$exe was successful" >&2
         else
             case $? in
@@ -40,19 +47,19 @@ function run_test() {
                 echo "?????"; exit 3
                 ;;
             2)
-                ((failures[notupxpacked]+=1))
+                ((results[notupxpacked]+=1))
                 ;;
             3)
-                ((failures[otherunpackerr]+=1))
+                ((results[otherunpackerr]+=1))
                 ;;
             4)
-                ((failures[nomoziheader]+=1))
+                ((results[nomoziheader]+=1))
                 ;;
             5)
-                ((failures[parsingerror]+=1))
+                ((results[parsingerror]+=1))
                 ;;
             6)
-                ((failures[decodingerror]+=1))
+                ((results[decodingerror]+=1))
                 ;;
             *)
                 echo "??????" exit 420
@@ -64,16 +71,17 @@ function run_test() {
 
     echo "[*] final evaluation" >&2
 
-    total=$(($(ls test/master | wc -l) - 1))
-    successful=$(ls test/ | wc -l)
-
-    echo "total samples: $total" >&2
-    echo "successes: $successful" >&2
+    echo "total samples: ${results[total]}" >&2
+    echo "successes: ${results[successes]}" >&2
     echo "failures:" >&2
     
-    for i in "${!failures[@]}"; do
+    for i in "${!results[@]}"; do
+        if [[ $i == "successes" ]] || [[ $i == "total" ]]; then
+            continue
+        fi
+
         failtype=$i
-        failcount="${failures[$i]}"
+        failcount="${results[$i]}"
         if [[ $failcount != 0 ]]; then
             echo "  - $failtype : $failcount" >&2
         fi
